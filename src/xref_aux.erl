@@ -67,7 +67,7 @@ analysis() ->
 ignores(M) ->
     Attrs     = mks(attributes, M:module_info()),
     Ignore    = mks(ignore_xref, Attrs),
-    Callbacks = [B:behaviour_info(callbacks) ++ maybe_maybe_callbacks(B) ++
+    Callbacks = [callbacks(B, maybe_callbacks) ++ callbacks(B, callbacks) ++
                      case B of
                          gen_server -> [{start_link, 0}];
                          _ -> []
@@ -98,8 +98,8 @@ filter_ignore_modules({MFA1, MFA2}) ->
 filter_ignore_modules({M, _F, _A}) ->
     not lists:member(M, ignore_modules()).
 
-maybe_maybe_callbacks(B) ->
-    try B:behaviour_info(maybe_callbacks) of
+callbacks(B, Type) ->
+    try B:behaviour_info(Type) of
         undefined -> [];
         L when is_list(L) -> L
     catch
