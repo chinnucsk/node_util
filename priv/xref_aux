@@ -1,0 +1,2 @@
+erl -noshell -pa deps/*/ebin -pa apps/*/ebin -sname xref_aux -s xref_aux
+find apps/*/src -name *rl -type f -exec grep -nH -i -e fixme {} /dev/null \;
